@@ -26,13 +26,14 @@ The only insights or learning moment with this is navigating the creation and se
 
 
 ## Materials
-| Component | Purpose | Qty | Example Source |
-|-----------|---------|-----|---------------|
-| Raspberry Pi Pico WH | Main microcontroller with WiFi | 1 | [Electrokit](https://www.electrokit.com/raspberry-pi-pico-wh) |
-| DHT11 Sensor | Temperature & humidity sensing | 1 | [Electrokit](https://www.electrokit.com/digital-temperatur-och-fuktsensor-dht11) |
-| Breadboard | Circuit assembly | 1  | [Electrokit](https://www.electrokit.com/kopplingsdack-840-anslutningar) |
-| Jumper Wires | Cables for connectivity | 1  | [Electrokit](https://www.electrokit.com/labbsladd-20-pin-15cm-hane/hane) |
-| USB Cable | Power & programming | 1 | [Electrokit](https://www.electrokit.com/usb-kabel-a-hane-micro-b-5p-hane-vinklad-1.8m) |
+*Total cost = 308kr*
+| Component | Purpose | Qty | Example Source | Cost |
+|-----------|---------|-----|----------------|------|
+| Raspberry Pi Pico WH | Main microcontroller with WiFi | 1 | [Electrokit](https://www.electrokit.com/raspberry-pi-pico-wh) | 99kr |
+| DHT11 Sensor | Temperature & humidity sensing | 1 | [Electrokit](https://www.electrokit.com/digital-temperatur-och-fuktsensor-dht11) | 49kr |
+| Breadboard | Circuit assembly | 1  | [Electrokit](https://www.electrokit.com/kopplingsdack-840-anslutningar) | 69kr |
+| Jumper Wires | Cables for connectivity | 1  | [Electrokit](https://www.electrokit.com/labbsladd-20-pin-15cm-hane/hane) | 52kr |
+| USB Cable | Power & programming | 1 | [Electrokit](https://www.electrokit.com/usb-kabel-a-hane-micro-b-5p-hane-vinklad-1.8m) | 39kr |
 
 ### Key Components Visualized
 ![Raspberry Pi Pico WH](https://www.electrokit.com/resource/u1sX/ZiO/SY7Lfudpmbg/product/41019/41019114/PICO-WH-HERO.jpg)
@@ -69,6 +70,7 @@ I did this on an older Laptop running Ubuntu, and no tools that are used are uni
    - After creating the project plug the Pico into your computer
    - there should be a new device that pops up and is available for connecting, do so
    - Now your Pico is connected to your computer and ready to flash code onto it
+   - By clicking the "Start development mode" button the code will be flashed over to the pico when a file changes in the project.
 
 ### Connectivity
 The hardware connection part of this project is extremely easy since its just one component that needs three things from the pico, power, ground, and a signal receiver. So set down the pico on a the breadboard such that the USB input of the pico faces away from the rest of the board. Then set the dht11 sensor on the other side of the board so that pins can be connected directly in front of it. Then with the dht11 facing you, the blue sensor part, from left to right the pins are as follows: signal, power, ground. With this we can now connect the pins from the dht11 to the pico with some help from the following diagram. 
@@ -82,8 +84,11 @@ This diagram should help in visualizing what the final connections should mimic,
 
 On the topic of voltage and electrical details there really is not much to be said since the dht11 has a built in resistor which makes the connectivity very simple, the 3 volt connection from the pico proved to be enough for the project to run so there was no need to limit test the power on the dht11.
 
+### Electrical calculations
+Since the dht11 has a built in resistor it is as simple as the dht11 draws 0.5-2.5mA from the picos 3.3V pin, which well within its 300mA output limit of the picos 3.3V pin.
+
 ## Platform
-The platform i chose for visualizing the data gathered by CliMACS became AdaFruit since they had the most straight forward way of sending the data while also offering enough free features for this project to work with. If some sort of expansion is required then there is a paid plan for 10 dollars(~95kr) which would offer more available data storage, more frequent updates to data per minute, along with many more features. Communication wise they use the MQTT protocol to receive and broker the data to the correct place. Which also makes the code to send the data very simple. Although this is not a project that really could scale very far besides having multiple sensors in multiple rooms if scaling up would be necessary, lets say we have a metropolitan level CliMACS distribution, we would then need a big data level of data collection service which AdaFruit would not be able to handle on its own. In that scenario switching to something like AWS IoT would be a better fit. Since its built to handle big data and thousands of IoT devices while automatically scaling when more IoT devices connect without infrastructure management. 
+The platform i chose for visualizing the data gathered by CliMACS became AdaFruit since they had the most straight forward way of sending the data while also offering enough free features for this project to work with. If some sort of expansion is required then there is a paid plan for 10 dollars(~95kr) which would offer more available data storage, more frequent updates to data per minute, along with many more features. Communication wise they use the MQTT protocol to receive and broker the data to the correct place. Which also makes the code to send the data very simple. Although this is not a project that really could scale very far besides having multiple sensors in multiple rooms if scaling up would be necessary, lets say we have a metropolitan level CliMACS distribution, we would then need a big data level of data collection service which AdaFruit would not be able to handle on its own. In that scenario switching to something like AWS IoT would be a better fit. Since its built to handle big data and thousands of IoT devices while automatically scaling when more IoT devices connect without infrastructure management. Thus compared to other choices like AWS IoT adafruit was superior for smaller projects like this aswell as cost since it is completely free to a certain degree that wont be hit soon.
 
 ### Code Structure
 
@@ -92,7 +97,7 @@ The code for this project is mainly made in a modular way such that main.py can 
 - **`main.py`**: The main application logic. It reads temperature and humidity from the DHT11 sensor, checks if a window should be opened, sends alerts to Discord via the discord webhook, and publishes sensor data to Adafruit using MQTT.
 - **`boot.py`**: Handles the WiFi connectivity at startup, making sure the pico is connected to the network before running the main logic.
 - **`keys.py`**: Stores all sensitive configuration such as WiFi credentials and Adafruit keys. This file is largely left unset since it completely depends on your keys and wifi credentials.
-- **`webHook.py`**: Contains the function to send formatted alert messages to a Discord channel using the webhook.
+- **`webHook.py`**: Contains the function to send a formatted alert messages to a Discord channel using the webhook.
 - **`mqtt.py`**: (Provided by the course) Implements the MQTT protocol for sending data to Adafruit.
 
 All code is available in my [GitHub repository](https://github.com/ANTJNSX/LNU_IoT_2025-CliMACS).
