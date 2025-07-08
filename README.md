@@ -142,7 +142,7 @@ while True:
 ## Presenting the data
 Here is a picture from the dashboard showing the active time from testing later in the night and later in the day after.
 
-![ADAFRUIT IO Dashboard](https://hackmd.io/_uploads/ry0MAU4Seg.png)
+![adafruitData](https://hackmd.io/_uploads/SJ9j6K5rel.png)
 
 Here we can the the dashboard in action with the corresponding readings from the temperature and the humidity, captured around 12-1am, and then the day after around 4pm and forward. We can see clearly that the temperature stays largely the same throughout the hours of the day and night with some jumps here and there. The interesting part comes at the day after where upon starting to cook, since i left it on and worked in the kitchen, a door was opened and the humidity shot down, while temperature rose because of the heat from cooking and the weather outside. Since the conditions of the kitchen where not too bad in this case and preemtively opening a window we could predict that if the window was never opened the humidity would have risen from a stove/oven being on as well as multiple people being in the room that a notification that either the temperature or the humidity would have risen to a level to where a notification would have been sent and a window would have been opened to shut the notifications off.
 
